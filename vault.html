@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault de los Recuerdos - AG STICK</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .vault-content { padding: 4rem; max-width: 1200px; margin: 0 auto; }
+        .folder-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 2rem; 
+            margin-top: 3rem;
+        }
+        .folder-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .folder-card:hover {
+            background: var(--glass-hover);
+            transform: translateY(-10px);
+            border-color: var(--secondary);
+        }
+        .folder-card i { font-size: 4rem; color: var(--secondary); margin-bottom: 1rem; }
+        .folder-card h3 { font-size: 1.1rem; color: white; }
+        
+        .upload-section {
+            margin-top: 5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 2px dashed var(--card-border);
+            padding: 4rem;
+            border-radius: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .upload-section:hover { border-color: var(--secondary); background: rgba(206, 17, 38, 0.05); }
+        .upload-section i { font-size: 3rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+        
+        .back-nav { margin-bottom: 2rem; }
+        .back-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 0.5rem; 
+            transition: color 0.3s;
+        }
+        .back-link:hover { color: white; }
+    </style>
+</head>
+<body>
+    <div class="vault-content">
+        <nav class="back-nav">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Volver al Dashboard
+            </a>
+        </nav>
+
+        <h1 class="section-title">Vault de los Recuerdos</h1>
+        <p style="color: var(--text-muted); text-align: center;">Acceso histórico a las promociones y archivos del centro.</p>
+
+        <div class="folder-grid">
+            <div class="folder-card">
+                <i class="fas fa-folder"></i>
+                <h3>Promoción 2020</h3>
+            </div>
+            <div class="folder-card">
+                <i class="fas fa-folder"></i>
+                <h3>Promoción 2021</h3>
+            </div>
+            <div class="folder-card">
+                <i class="fas fa-folder"></i>
+                <h3>Promoción 2022</h3>
+            </div>
+            <div class="folder-card">
+                <i class="fas fa-folder"></i>
+                <h3>Promoción 2023</h3>
+            </div>
+            <div class="folder-card">
+                <i class="fas fa-folder"></i>
+                <h3>Promoción 2024</h3>
+            </div>
+            <div class="folder-card">
+                <i class="fas fa-folder-plus" style="color: var(--text-muted);"></i>
+                <h3 style="color: var(--text-muted);">Nueva Carpeta</h3>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <h2>Subir Archivos al Vault</h2>
+            <p>Arrastra tus fotos o documentos aquí para archivarlos en la promoción correspondiente.</p>
+            <input type="file" id="fileUpload" style="display: none;">
+            <button onclick="document.getElementById('fileUpload').click()" class="vault-btn" style="margin-top: 1rem; font-size: 1rem; padding: 1rem 2rem;">
+                Seleccionar Archivos
+            </button>
+        </div>
+    </div>
+</body>
+</html>

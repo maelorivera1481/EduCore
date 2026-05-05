@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Módulo de Estudiantes - AG STICK</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Specific layout for Students Module */
+        .students-layout {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+        }
+        
+        .students-sidebar {
+            width: 350px;
+            background: rgba(10, 14, 23, 0.95);
+            border-right: 1px solid var(--card-border);
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        
+        .sidebar-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+        
+        .sidebar-header h2 {
+            margin: 0 0 1rem 0;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar-header h2 i {
+            color: var(--secondary);
+        }
+        
+        .search-bar {
+            background: var(--glass);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            color: white;
+            width: 100%;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+        }
+
+        .student-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .student-item {
+            background: var(--glass);
+            border: 1px solid transparent;
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .student-item:hover, .student-item.active {
+            background: var(--glass-hover);
+            border-color: var(--secondary);
+        }
+
+        .student-item img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--secondary);
+        }
+
+        .student-info h4 {
+            margin: 0 0 0.3rem 0;
+            color: white;
+            font-weight: 600;
+        }
+
+        .student-info p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .students-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 2rem 3rem;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .btn-back:hover {
+            color: var(--secondary);
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(206, 17, 38, 0.4);
+        }
+
+        /* Profile Header */
+        .profile-header {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            background: var(--glass);
+            border: 1px solid var(--card-border);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+
+        .profile-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid var(--secondary);
+        }
+
+        .profile-title h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .profile-title p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-badge {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(46, 204, 113, 0.5);
+        }
+
+        /* Tabs */
+        .tabs-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 1rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: white;
+            background: var(--glass);
+        }
+
+        .tab-btn.active {
+            color: white;
+            background: var(--secondary);
+            box-shadow: 0 5px 15px rgba(206, 17, 38, 0.3);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .form-section {
+            background: var(--glass);
+            border: 1px solid var(--card-border);
+            padding: 2rem;
+            border-radius: 20px;
+        }
+
+        .form-section h3 {
+            margin: 0 0 1.5rem 0;
+            color: white;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 0.8rem;
+        }
+
+        .form-section h3 i {
+            color: var(--secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--card-border);
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            font-family: 'Outfit', sans-serif;
+            outline: none;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--secondary);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+<body class="theme-red">
+    <div class="students-layout">
+        <!-- Sidebar: Student List -->
+        <aside class="students-sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-graduation-cap"></i> Estudiantes</h2>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar alumno...">
+                </div>
+            </div>
+            <div class="student-list">
+                <div class="student-item active">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="Estudiante">
+                    <div class="student-info">
+                        <h4>Carlos Rodríguez</h4>
+                        <p>Matrícula: 2024-001 • 3ro Secundaria</p>
+                    </div>
+                </div>
+                <div class="student-item">
+                    <img src="https://i.pravatar.cc/150?img=5" alt="Estudiante">
+                    <div class="student-info">
+                        <h4>Ana Lidia Mercedes</h4>
+                        <p>Matrícula: 2024-002 • 1ro Bachillerato</p>
+                    </div>
+                </div>
+                <div class="student-item">
+                    <img src="https://i.pravatar.cc/150?img=8" alt="Estudiante">
+                    <div class="student-info">
+                        <h4>Marcos Peña</h4>
+                        <p>Matrícula: 2024-003 • 4to Primaria</p>
+                    </div>
+                </div>
+            </div>
+            <div style="padding: 1rem; border-top: 1px solid var(--card-border);">
+                <button class="btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-plus"></i> Nuevo Estudiante
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content: Student Details -->
+        <main class="students-main">
+            <div class="top-bar">
+                <a href="index.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Volver al Dashboard
+                </a>
+            </div>
+
+            <div class="profile-header">
+                <img src="https://i.pravatar.cc/150?img=11" alt="Carlos Rodríguez" class="profile-photo">
+                <div class="profile-title">
+                    <h1>Carlos Rodríguez Pérez</h1>
+                    <p><i class="fas fa-id-card"></i> 2024-001 | 3ro Secundaria <span class="status-badge">Activo</span></p>
+                </div>
+                <div style="margin-left: auto; display: flex; gap: 1rem;">
+                    <button class="btn-primary" style="background: var(--glass); border: 1px solid var(--card-border); color: white;">
+                        <i class="fas fa-print"></i> Imprimir Ficha
+                    </button>
+                    <button class="btn-primary">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </div>
+            </div>
+
+            <div class="tabs-container">
+                <button class="tab-btn active" onclick="openTab('personales', event)"><i class="fas fa-user"></i> Datos Personales</button>
+                <button class="tab-btn" onclick="openTab('academico', event)"><i class="fas fa-book"></i> Académico</button>
+                <button class="tab-btn" onclick="openTab('familiar', event)"><i class="fas fa-users"></i> Familiar</button>
+                <button class="tab-btn" onclick="openTab('medica', event)"><i class="fas fa-notes-medical"></i> Médica</button>
+                <button class="tab-btn" onclick="openTab('administrativa', event)"><i class="fas fa-file-invoice-dollar"></i> Administrativa</button>
+                <button class="tab-btn" onclick="openTab('actividades', event)"><i class="fas fa-running"></i> Actividades</button>
+                <button class="tab-btn" onclick="openTab('tecnicas', event)"><i class="fas fa-laptop-code"></i> Plataforma</button>
+            </div>
+
+            <!-- Tab: Personales -->
+            <div id="personales" class="tab-content active">
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3><i class="fas fa-address-card"></i> Información Básica</h3>
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input type="text" value="Carlos Rodríguez Pérez">
+                        </div>
+                        <div class="form-group">
+                            <label>Identificación (Cédula/Pasaporte)</label>
+                            <input type="text" value="402-1234567-8">
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de Nacimiento</label>
+                            <input type="date" value="2010-05-14">
+                        </div>
+                        <div class="form-group">
+                            <label>Sexo</label>
+                            <select>
+                                <option>Masculino</option>
+                                <option>Femenino</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Nacionalidad</label>
+                            <input type="text" value="Dominicana">
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-map-marker-alt"></i> Contacto</h3>
+                        <div class="form-group">
+                            <label>Dirección de Residencia</label>
+                            <textarea rows="3">Av. Winston Churchill #123, Piantini, Santo Domingo</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono Principal</label>
+                            <input type="tel" value="(809) 555-0192">
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electrónico Personal</label>
+                            <input type="email" value="carlos.rp@email.com">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Académico -->
+            <div id="academico" class="tab-content">
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3><i class="fas fa-graduation-cap"></i> Registro Escolar</h3>
+                        <div class="form-group">
+                            <label>Matrícula / Código</label>
+                            <input type="text" value="2024-001" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Nivel Educativo</label>
+                            <select>
+                                <option>Secundaria</option>
+                                <option>Primaria</option>
+                                <option>Inicial</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Grado y Sección</label>
+                            <input type="text" value="3ro A">
+                        </div>
+                        <div class="form-group">
+                            <label>Año Escolar de Ingreso</label>
+                            <input type="text" value="2018-2019">
+                        </div>
+                        <div class="form-group">
+                            <label>Estado Académico</label>
+                            <select>
+                                <option>Activo</option>
+                                <option>Egresado</option>
+                                <option>Transferido</option>
+                                <option>Suspendido</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-clipboard-list"></i> Desempeño</h3>
+                        <div class="form-group">
+                            <label>Promedio General Acumulado</label>
+                            <input type="text" value="92.5 / 100" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Asignaturas Inscritas</label>
+                            <textarea rows="3" readonly>Matemáticas, Lengua Española, Ciencias Sociales, Ciencias de la Naturaleza, Inglés</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Conducta / Observaciones</label>
+                            <textarea rows="3">Excelente comportamiento. Participativo en clase.</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Familiar -->
+            <div id="familiar" class="tab-content">
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3><i class="fas fa-user-friends"></i> Tutor Principal</h3>
+                        <div class="form-group">
+                            <label>Nombre del Padre/Madre/Tutor</label>
+                            <input type="text" value="José Rodríguez">
+                        </div>
+                        <div class="form-group">
+                            <label>Relación</label>
+                            <input type="text" value="Padre">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono Celular</label>
+                            <input type="tel" value="(809) 555-9999">
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electrónico</label>
+                            <input type="email" value="j.rodriguez@empresa.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Ocupación</label>
+                            <input type="text" value="Ingeniero Civil">
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-car"></i> Logística y Autorizaciones</h3>
+                        <div class="form-group">
+                            <label>Dirección de Residencia Familiar</label>
+                            <textarea rows="3">Av. Winston Churchill #123, Piantini, Santo Domingo</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Personas Autorizadas para Recoger</label>
+                            <textarea rows="3">José Rodríguez (Padre)&#10;María Pérez (Madre)&#10;Juan Domínguez (Tío)</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Medica -->
+            <div id="medica" class="tab-content">
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3><i class="fas fa-heartbeat"></i> Perfil de Salud</h3>
+                        <div class="form-group">
+                            <label>Tipo de Sangre</label>
+                            <select>
+                                <option>O+</option>
+                                <option>O-</option>
+                                <option>A+</option>
+                                <option>A-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Alergias</label>
+                            <textarea rows="2">Polvo, Penicilina</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Condiciones Médicas Relevantes</label>
+                            <textarea rows="2">Asma leve controlada</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Medicamentos Habituales</label>
+                            <input type="text" value="Inhalador Salbutamol (en caso de crisis)">
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-ambulance"></i> Emergencias</h3>
+                        <div class="form-group">
+                            <label>Seguro Médico (ARS)</label>
+                            <input type="text" value="Humano Seguros - Plan Max">
+                        </div>
+                        <div class="form-group">
+                            <label>No. de Afiliado</label>
+                            <input type="text" value="001239845">
+                        </div>
+                        <div class="form-group">
+                            <label>Contacto de Emergencia</label>
+                            <input type="text" value="María Pérez (Madre) - (829) 555-8888">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Administrativa -->
+            <div id="administrativa" class="tab-content">
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3><i class="fas fa-money-check-alt"></i> Estado Financiero</h3>
+                        <div class="form-group">
+                            <label>Estado de Colegiatura</label>
+                            <select>
+                                <option>Al Día</option>
+                                <option>Con Atraso</option>
+                                <option>Becado 100%</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Becas o Ayudas</label>
+                            <input type="text" value="Media Beca por Excelencia Académica (50%)">
+                        </div>
+                        <div class="form-group">
+                            <label>Historial de Pagos Recientes</label>
+                            <ul style="color: var(--text-muted); font-size: 0.9rem; padding-left: 1.2rem;">
+                                <li>Octubre 2024 - Pagado</li>
+                                <li>Septiembre 2024 - Pagado</li>
+                                <li>Inscripción 2024-2025 - Pagado</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-folder-open"></i> Documentación</h3>
+                        <div class="form-group">
+                            <label>Documentos Entregados en Archivo</label>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted);">
+                                <label><input type="checkbox" checked disabled> Acta de Nacimiento Original</label>
+                                <label><input type="checkbox" checked disabled> Certificado Médico</label>
+                                <label><input type="checkbox" checked disabled> 4 Fotografías 2x2</label>
+                                <label><input type="checkbox" checked disabled> Récord de Notas Previo</label>
+                                <label><input type="checkbox" disabled> Carta de Buena Conducta</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Actividades -->
+            <div id="actividades" class="tab-content">
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3><i class="fas fa-medal"></i> Vida Escolar</h3>
+                        <div class="form-group">
+                            <label>Clubes o Grupos Extracurriculares</label>
+                            <textarea rows="2">Club de Debate, Modelo de Naciones Unidas (MINU)</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Actividades Deportivas</label>
+                            <input type="text" value="Equipo de Baloncesto Escolar (Capitán)">
+                        </div>
+                        <div class="form-group">
+                            <label>Proyectos Escolares Destacados</label>
+                            <textarea rows="2">Feria Científica 2023 (1er Lugar - Energía Renovable)</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Reconocimientos</label>
+                            <textarea rows="2">Medalla al Mérito Académico 2023</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab: Tecnicas -->
+            <div id="tecnicas" class="tab-content">
+                <div class="form-grid">
+                    <div class="form-section">
+                        <h3><i class="fas fa-cogs"></i> Acceso y Permisos</h3>
+                        <div class="form-group">
+                            <label>Usuario (Credencial)</label>
+                            <input type="text" value="crodriguez24">
+                        </div>
+                        <div class="form-group">
+                            <label>Contraseña</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="password" value="********" readonly style="flex:1;">
+                                <button class="btn-primary" style="padding: 0.5rem; background: var(--glass); border: 1px solid var(--card-border);"><i class="fas fa-sync"></i></button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Rol en Plataforma</label>
+                            <select>
+                                <option>Estudiante</option>
+                                <option>Delegado de Curso</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado de Cuenta</label>
+                            <select>
+                                <option>Activo</option>
+                                <option>Inactivo</option>
+                                <option>Bloqueado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h3><i class="fas fa-bell"></i> Notificaciones</h3>
+                        <div class="form-group">
+                            <label>Preferencias de Recepción</label>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted);">
+                                <label><input type="checkbox" checked> Correo Electrónico</label>
+                                <label><input type="checkbox" checked> SMS (Mensajes de texto)</label>
+                                <label><input type="checkbox" checked> Push en App Móvil</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        function openTab(tabId, event) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>

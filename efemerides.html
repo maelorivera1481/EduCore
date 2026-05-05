@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efemérides Patrias - AG STICK</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .efemerides-container { padding: 4rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .timeline { position: relative; margin-top: 4rem; }
+        .event-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 25px;
+            overflow: hidden;
+            margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s ease;
+        }
+        .event-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary);
+            box-shadow: 0 15px 40px rgba(206, 17, 38, 0.2);
+        }
+        .event-image { height: 100%; width: 100%; object-fit: cover; }
+        .event-content { padding: 3rem; }
+        .event-date { 
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .event-title { font-size: 2rem; font-weight: 800; margin-bottom: 1rem; color: white; }
+        .event-desc { color: var(--text-muted); line-height: 1.8; font-size: 1.1rem; }
+        
+        .header-back { margin-bottom: 3rem; display: flex; justify-content: center; }
+        .btn-back {
+            text-decoration: none;
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .btn-back:hover { color: var(--secondary); }
+
+        @media (max-width: 900px) {
+            .event-card { grid-template-columns: 1fr; }
+            .event-image { height: 250px; }
+        }
+    </style>
+</head>
+<body class="theme-red">
+    <div class="efemerides-container">
+        <div class="header-back">
+            <a href="index.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Volver al Dashboard
+            </a>
+        </div>
+
+        <h1 class="section-title">EFEMÉRIDES PATRIAS</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 5rem;">Un viaje por la historia y los valores de la República Dominicana.</p        <div class="timeline">
+            <!-- Altagracia -->
+            <div class="event-card">
+                <img src="altagracia.png" alt="Día de Nuestra Señora de la Altagracia" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">21 de Enero</span>
+                    <h2 class="event-title">Día de Nuestra Señora de la Altagracia</h2>
+                    <p class="event-desc">
+                        Festividad religiosa dedicada a la protectora espiritual del pueblo dominicano. Cada año, miles de fieles peregrinan a la Basílica de Higüey para rendir honor a la "Madre de la Altagracia".
+                    </p>
+                </div>
+            </div>
+
+            <!-- Juan Pablo Duarte -->
+            <div class="event-card">
+                <img src="https://images.unsplash.com/photo-1574627453457-41ec923b7bda?q=80&w=600&auto=format&fit=crop" alt="Natalicio de Juan Pablo Duarte" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">26 de Enero</span>
+                    <h2 class="event-title">Natalicio de Juan Pablo Duarte</h2>
+                    <p class="event-desc">
+                        Padre de la Patria y fundador de la sociedad secreta La Trinitaria. Duarte dedicó su vida y recursos a la creación de una República Dominicana independiente, democrática y libre de toda dominación extranjera.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Matías Ramón Mella -->
+            <div class="event-card">
+                <img src="mella.png" alt="Natalicio de Matías Ramón Mella" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">25 de Febrero</span>
+                    <h2 class="event-title">Natalicio de Matías Ramón Mella</h2>
+                    <p class="event-desc">
+                        Héroe de la Independencia y Padre de la Patria. Mella es recordado por disparar el histórico trabucazo en la Puerta del Conde, acción que despertó el espíritu libertador de la nación.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Independencia -->
+            <div class="event-card">
+                <img src="independencia.png" alt="Independencia Nacional" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">27 de Febrero</span>
+                    <h2 class="event-title">Independencia Nacional</h2>
+                    <p class="event-desc">
+                        En 1844, los patriotas dominicanos liderados por la sociedad secreta La Trinitaria proclamaron la separación de Haití. El nacimiento de nuestra nación libre y soberana.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Francisco del Rosario Sánchez -->
+            <div class="event-card">
+                <img src="sanchez.png" alt="Natalicio de Francisco del Rosario Sánchez" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">9 de Marzo</span>
+                    <h2 class="event-title">Natalicio de Francisco del Rosario Sánchez</h2>
+                    <p class="event-desc">
+                        Héroe nacional y Padre de la Patria. Tras el exilio de Duarte, asumió el liderazgo de la lucha independentista y fue quien izó por primera vez la bandera dominicana en el Baluarte del Conde.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Batalla 30 de Marzo -->
+            <div class="event-card">
+                <img src="batalla_marzo.png" alt="Batalla de Santiago" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">30 de Marzo</span>
+                    <h2 class="event-title">Batalla de Santiago (30 de Marzo)</h2>
+                    <p class="event-desc">
+                        Segunda batalla posterior a la Independencia Nacional, donde las tropas dominicanas derrotaron al ejército haitiano en Santiago, consolidando la soberanía recién proclamada.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Revolución de Abril (Caamaño) -->
+            <div class="event-card">
+                <img src="caamano.png" alt="Francisco Alberto Caamaño Deñó" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">24 de Abril</span>
+                    <h2 class="event-title">Revolución de Abril (F. Caamaño)</h2>
+                    <p class="event-desc">
+                        Líder histórico de la Revolución de 1965 y Presidente Constitucional. Defendió con valentía la soberanía nacional exigiendo el retorno de la democracia.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Día del Trabajo -->
+            <div class="event-card">
+                <img src="trabajo.png" alt="Día Internacional del Trabajo" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">1 de Mayo</span>
+                    <h2 class="event-title">Día Internacional del Trabajo</h2>
+                    <p class="event-desc">
+                        Día dedicado a honrar a los trabajadores dominicanos y sus aportes al desarrollo económico y social del país. Una jornada de reflexión sobre los derechos laborales.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Día de las Madres -->
+            <div class="event-card">
+                <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=600&auto=format&fit=crop" alt="Día de las Madres" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">Último Domingo de Mayo</span>
+                    <h2 class="event-title">Día de las Madres</h2>
+                    <p class="event-desc">
+                        Una de las festividades más importantes de la cultura dominicana, donde se celebra el amor incondicional y el pilar fundamental de la familia dominicana: la madre.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Restauración -->
+            <div class="event-card">
+                <img src="https://images.unsplash.com/photo-1596701062351-8c2c14d1fdd0?q=80&w=600&auto=format&fit=crop" alt="Restauración de la República" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">16 de Agosto</span>
+                    <h2 class="event-title">Restauración de la República</h2>
+                    <p class="event-desc">
+                        Gesta patriótica iniciada en 1863 con el Grito de Capotillo. Este conflicto devolvió la soberanía al país tras la anexión a España.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Natalicio de Gregorio Luperón -->
+            <div class="event-card">
+                <img src="gregorio.png" alt="Natalicio de Gregorio Luperón" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">8 de Septiembre</span>
+                    <h2 class="event-title">Natalicio de Gregorio Luperón</h2>
+                    <p class="event-desc">
+                        Nacimiento de la "Primera Espada de la Restauración". Destacado militar y líder político que defendió férreamente la soberanía dominicana.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Constitución -->
+            <div class="event-card">
+                <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600&auto=format&fit=crop" alt="Día de la Constitución" class="event-image">
+                <div class="event-content">
+                    <span class="event-date">6 de Noviembre</span>
+                    <h2 class="event-title">Día de la Constitución</h2>
+                    <p class="event-desc">
+                        Conmemoración de la firma de la primera Constitución dominicana en San Cristóbal en 1844, sentando las bases democráticas de nuestra nación.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

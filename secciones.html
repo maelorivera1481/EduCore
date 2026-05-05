@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Secciones - AG STICK</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .secciones-container {
+            padding: 4rem 2rem;
+            max-width: 1500px;
+            margin: 0 auto;
+            width: 95%;
+        }
+
+        .header-back {
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn-back {
+            text-decoration: none;
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .btn-back:hover {
+            color: var(--secondary);
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 1200px) {
+            .levels-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 800px) {
+            .levels-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .level-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 25px;
+            padding: 2rem;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .level-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 1rem;
+        }
+
+        .level-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: white;
+            white-space: nowrap;
+        }
+
+        .level-title i {
+            color: var(--secondary);
+            font-size: 1.8rem;
+        }
+
+        .btn-add {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-add:hover {
+            background: #2ecc71;
+            color: white;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .sections-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .section-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .section-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .section-name {
+            font-weight: 600;
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .btn-delete {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.3rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .btn-delete:hover {
+            color: var(--secondary);
+            background: rgba(206, 17, 38, 0.1);
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--bg-dark);
+            border: 1px solid var(--card-border);
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            color: white;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .modal-content input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .btn-cancel:hover {
+            color: white;
+        }
+
+        .btn-confirm {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+<body class="theme-red">
+    <div class="secciones-container">
+        <div class="header-back">
+            <a href="index.html" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Volver al Dashboard
+            </a>
+        </div>
+
+        <h1 class="section-title">GESTIÓN DE SECCIONES</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Administre los grupos y aulas por nivel educativo.</p>
+
+        <div class="levels-grid">
+            <!-- Nivel Inicial -->
+            <div class="level-card">
+                <div class="level-header">
+                    <div class="level-title">
+                        <i class="fas fa-shapes"></i> Nivel Inicial
+                    </div>
+                    <button class="btn-add" onclick="openModal('Inicial')">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                </div>
+                <div class="sections-list" id="list-inicial">
+                    <div class="section-item">
+                        <span class="section-name">Pre-Kínder</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">Kínder</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">Pre-Primario</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel Primario -->
+            <div class="level-card">
+                <div class="level-header">
+                    <div class="level-title">
+                        <i class="fas fa-child"></i> Nivel Primario
+                    </div>
+                    <button class="btn-add" onclick="openModal('Primario')">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                </div>
+                <div class="sections-list" id="list-primario">
+                    <div class="section-item">
+                        <span class="section-name">1ro A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">1ro B</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">2do A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">3ro A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">4to A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">5to A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">6to A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nivel Secundario -->
+            <div class="level-card">
+                <div class="level-header">
+                    <div class="level-title">
+                        <i class="fas fa-user-graduate"></i> Nivel Secundario
+                    </div>
+                    <button class="btn-add" onclick="openModal('Secundario')">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                </div>
+                <div class="sections-list" id="list-secundario">
+                    <div class="section-item">
+                        <span class="section-name">1ro A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">1ro B</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">2do A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">3ro A</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">4to Informática</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">5to Informática</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <div class="section-item">
+                        <span class="section-name">6to Informática</span>
+                        <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for adding section -->
+    <div class="modal-overlay" id="addModal">
+        <div class="modal-content">
+            <h3 id="modalTitle">Agregar Sección</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0;">Ingrese el nombre de la nueva sección (Ej: 2do B)</p>
+            <input type="text" id="sectionNameInput" placeholder="Nombre de la sección...">
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="btn-confirm" onclick="confirmAddSection()">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+    <script>
+        let currentLevel = '';
+
+        function openModal(level) {
+            currentLevel = level;
+            document.getElementById('modalTitle').innerText = 'Agregar Sección - ' + level;
+            document.getElementById('sectionNameInput').value = '';
+            document.getElementById('addModal').classList.add('active');
+            document.getElementById('sectionNameInput').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').classList.remove('active');
+        }
+
+        function confirmAddSection() {
+            const input = document.getElementById('sectionNameInput');
+            const sectionName = input.value.trim();
+            
+            if(sectionName === '') {
+                alert('Por favor ingrese un nombre para la sección.');
+                return;
+            }
+
+            let listId = '';
+            if (currentLevel === 'Inicial') listId = 'list-inicial';
+            else if (currentLevel === 'Primario') listId = 'list-primario';
+            else listId = 'list-secundario';
+            
+            const listContainer = document.getElementById(listId);
+
+            const newItem = document.createElement('div');
+            newItem.className = 'section-item';
+            newItem.innerHTML = `
+                <span class="section-name">${sectionName}</span>
+                <button class="btn-delete" onclick="this.parentElement.remove()" title="Eliminar Sección"><i class="fas fa-trash"></i></button>
+            `;
+
+            listContainer.appendChild(newItem);
+            closeModal();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('addModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+        
+        // Enter key to save
+        document.getElementById('sectionNameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                confirmAddSection();
+            }
+        });
+    </script>
+</body>
+</html>
